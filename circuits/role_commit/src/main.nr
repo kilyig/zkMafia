@@ -11,5 +11,3 @@ fn main(
     let roleHash = std::hash::pedersen([role as Field, salt as Field]);
     roleHash[0]
 }
-
-

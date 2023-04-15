@@ -1,18 +1,32 @@
 import { ethers } from "hardhat";
+import fs from "fs";
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
-
-  const lockedAmount = ethers.utils.parseEther("0.001");
-
-  const Lock = await ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
-
+  // deploy the role verifier
+  const RoleVerifier = await ethers.getContractFactory("contracts/RoleVerifier.sol:TurboVerifier");
+  const roleVerifier = await RoleVerifier.deploy();
+  await roleVerifier.deployed();
   console.log(
-    `Lock with ${ethers.utils.formatEther(lockedAmount)}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+    `RoleVerifier.sol deployed to ${roleVerifier.address}. Time: ${Date.now()}`
+  );
+
+  // deploy the role reveal verifier
+  const RoleRevealVerifier = await ethers.getContractFactory("contracts/RoleRevealVerifier.sol:TurboVerifier");
+  const roleRevealVerifier = await RoleRevealVerifier.deploy();
+  await roleRevealVerifier.deployed();
+  console.log(
+    `RoleRevealVerifier.sol deployed to ${roleRevealVerifier.address}. Time: ${Date.now()}`
+  );
+
+  // deploy the main contract
+  const Mafia = await ethers.getContractFactory("Mafia");
+  const mafia = await Mafia.deploy(
+    roleVerifier.address,
+    roleRevealVerifier.address
+  );
+  await mafia.deployed();
+  console.log(
+    `Mafia.sol deployed to ${mafia.address}. Time: ${Date.now()}`
   );
 }
 
