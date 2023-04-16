@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Web3.js Demo</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="./abi-decoder.js"></script>
+  </head>
+  <body>
+    <img id="center-image" src="daytime.png" alt="Daytime">
+    <h1>ZK-Mafia</h1>
+    <div class="panel panel_right">
+    <h2>Current Player</h2>
+    <select id="myaccount" class="account"></select>
+  </div>
+  <div class="wallet_addresses_panel">
+    <h2>Wallet Addresses</h2>
+    <ol class="wallet_addresses"></ol>
+  </div>
+    <div class="main">
+      <h2>Actions</h2>
+
+      <label for="creditor">
+        Target Address:
+      </label>
+        <input type="text" id="creditor">
+      
+      <button id="addiou">Assasinate Player</button>
+      <button id="addiou">Vote for player</button>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
+        type="application/javascript"></script>
+    <script src="./utils.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>

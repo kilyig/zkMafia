@@ -1,0 +1,74 @@
+body {
+    font-family: 'Source Sans Pro', 'Arial';
+    padding: 30px;
+}
+.main {
+	position: absolute;
+	width: 300px;
+	height: 300px;
+	padding: 20px;
+	bottom: 220px;
+	right: 10px;
+}
+.panel {
+	position: absolute;
+	top: 20px;
+	width: 300px;
+	background-color: #CCC;
+	padding: 20px;
+}
+.panel_left {
+	left: 20px;
+}
+.panel_right {
+	right: 20px;
+}
+#all_users {
+	color: #666;
+}
+
+#center-image {
+	display: block;
+	position: absolute;
+	max-width: 100%;
+	max-height: 100%;
+	border: none;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: -1; /* Change the z-index value to 1 or higher */
+  }
+  
+  /* ... rest of the CSS rules ... */
+  
+.wallet_addresses_panel {
+	position: absolute;
+	width: 300px;
+	height: 160px;
+	background-color: #CCC;
+	padding: 20px;
+	bottom: 10px;
+	right: 10px;
+	font-size: 10px;
+	opacity: 0.5;
+}
+#amount {
+	width: 140px;
+}
+
+label {
+	display:block;
+	margin-bottom:10px;
+}
+input {
+	width: 280px;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+button {
+	display: block;
+	margin: 30px 0;
+	padding: 15px 30px;
+	border: 1px solid #666;
+	background: #CCC;
+}
