@@ -12,7 +12,7 @@ import { BarretenbergWasm } from '@noir-lang/barretenberg/dest/wasm';
 import { writeFileSync } from "fs";
 
 
-describe("Hello", function () {
+describe("Deployment and basic game", function () {
     let verifierContract: any;
     let prove_role_acir: any;
     let prove_role_abi: any;
@@ -63,9 +63,9 @@ describe("Hello", function () {
           `Mafia.sol deployed to ${mafia.address}. Time: ${Date.now()}`
         );
     
-        const [addr1, addr2, addr3, addr4, addr5, addr6] = await ethers.getSigners();
+        const [addr1, addr2, addr3, addr4, addr5, addr6, addr7, addr8] = await ethers.getSigners();
     
-        return { mafia, addr1, addr2, addr3, addr4, addr5, addr6 };
+        return { mafia, addr1, addr2, addr3, addr4, addr5, addr6, addr7, addr8 };
     }
 
     before(async function() {
@@ -74,19 +74,14 @@ describe("Hello", function () {
         prove_role_acir = prove_role_compiled_program.circuit;
         prove_role_abi = prove_role_compiled_program.abi;
 
-        // console.log("abi", abi);
-
         const prove_role_serialised_circuit = serialise_acir_to_barrtenberg_circuit(prove_role_acir);
         const barretenberg = await BarretenbergWasm.new();
         const prove_role_circSize = await getCircuitSize(barretenberg, prove_role_serialised_circuit);
-        console.log("circSize", prove_role_circSize);
         
         [prove_role_prover, prove_role_verifier] = await setup_generic_prover_and_verifier(prove_role_acir);
 
-        // console.log(serialised_circuit);
         writeFileSync(path.resolve(__dirname, "../circuits/prove_role/src/prove_role_circuit.buf"), Buffer.from(prove_role_serialised_circuit));
 
-        // console.log(acir_to_bytes(acir));
         writeFileSync(path.resolve(__dirname, "../circuits/prove_role/src/prove_role_acir.buf"), Buffer.from(acir_to_bytes(prove_role_acir)));
         
         // Here down is for role_reveal
@@ -95,22 +90,19 @@ describe("Hello", function () {
         role_reveal_acir = role_reveal_compiled_program.circuit;
         role_reveal_abi = role_reveal_compiled_program.abi;
 
-        // console.log("abi", abi);
-
         const serialised_circuit = serialise_acir_to_barrtenberg_circuit(role_reveal_acir);
         const circSize = await getCircuitSize(barretenberg, serialised_circuit);
-        console.log("circSize", circSize);
         
         [role_reveal_prover, role_reveal_verifier] = await setup_generic_prover_and_verifier(role_reveal_acir);
 
-        // console.log(serialised_circuit);
         writeFileSync(path.resolve(__dirname, "../circuits/role_reveal/src/role_reveal_circuit.buf"), Buffer.from(serialised_circuit));
 
-        // console.log(acir_to_bytes(acir));
         writeFileSync(path.resolve(__dirname, "../circuits/role_reveal/src/role_reveal_acir.buf"), Buffer.from(acir_to_bytes(role_reveal_acir)));
     });
 
     it("Prove_role verify proof in nargo", async function () {
+        const { mafia, addr1, addr2, addr3, addr4, addr5, addr6, addr7, addr8 } = await loadFixture(deployTokenFixture);
+
         prove_role_abi.role = 1;
         prove_role_abi.role_hashes = roleHashes;
         prove_role_abi.salt = 1234567;
@@ -119,9 +111,17 @@ describe("Hello", function () {
         const verified = await verify_proof(prove_role_verifier, proof);
 
         expect(verified).eq(true);
+
+        // Here, we would verify the proof using the smart contract,
+        // but Noir has some bugs that are unfixable currently.
+        // People are talking about this on the Aztec Discord.
+        // const sc_verified = await proveRoleVerifier.verify(proof);
+        // expect(sc_verified.wait()).eq(true);    
     });
 
     it("role_reveal verify proof in nargo", async function () {
+        const { mafia, addr1, addr2, addr3, addr4, addr5, addr6, addr7, addr8 } = await loadFixture(deployTokenFixture);
+
         role_reveal_abi.role = 0;
         role_reveal_abi.roleHash = "0x26ef38b3202a99ac35fe7ee4c3a6f7c6426ea6c2efa34073a7a91bc308b0f6ce";
         role_reveal_abi.salt = 123;
@@ -130,10 +130,16 @@ describe("Hello", function () {
         const verified = await verify_proof(role_reveal_verifier, proof);
 
         expect(verified).eq(true);
+
+        // Here, we would verify the proof using the smart contract,
+        // but Noir has some bugs that are unfixable currently.
+        // People are talking about this on the Aztec Discord.
+        // const sc_verified = await roleRevealVerifier.verify(proof);
+        // expect(sc_verified.wait()).eq(false);    
     });
 
-    it("Begin game", async function () {
-        const { mafia, addr1, addr2, addr3, addr4, addr5, addr6, } = await loadFixture(deployTokenFixture);
+    it("Basic game", async function () {
+        const { mafia, addr1, addr2, addr3, addr4, addr5, addr6, addr7, addr8 } = await loadFixture(deployTokenFixture);
         
         // no player should be registered in the game before initialization
         const status = await mafia.areTheyAlive(addr1.address);
@@ -146,24 +152,41 @@ describe("Hello", function () {
         expect(status2).to.equal(true);
 
         // the game starts by the mafia making a move
-        // note that the mafia uses an address (addr6) other than its own (addr5)
         // prepare the proof that will tell the contract who the mafia's victim is
         let mafiaABI = prove_role_abi;
         mafiaABI.role = 1;
         mafiaABI.role_hashes = roleHashes;
         mafiaABI.salt = 1234567;
 
-        // addr2 is getting killed
         const proof = await create_proof(prove_role_prover, prove_role_acir, mafiaABI);
 
+        // verify locally because on-chain verification in Noir is broken
         const verified = await verify_proof(prove_role_verifier, proof);
-
         expect(verified).eq(true);
 
-        await (await mafia.connect(addr6).playMafia(
-          proof,
-          addr2.getAddress()
-        )).wait();
+        // addr2 is getting killed
+        // note that the mafia uses an address (addr6) other than its own (addr5)
+        const mafiaKills2 = await mafia.connect(addr6).playMafia(proof, addr2.getAddress());
+        mafiaKills2.wait();
+
+        // now, voting starts. remember, player 5 is the mafia.
+        // player 1 votes against player 5
+        const voteOf1 = await mafia.connect(addr1).vote(addr5.getAddress());
+        // player 3 votes against player 4
+        const voteOf3 = await mafia.connect(addr3).vote(addr5.getAddress());
+        // player 4 votes against player 1
+        const voteOf4 = await mafia.connect(addr4).vote(addr5.getAddress());
+        // player 5 votes against player 1
+        const voteOf5 = await mafia.connect(addr5).vote(addr1.getAddress());
+
+        // player 1 received 2 votes, so they get killed.
+
+        
+
+
+        voteOf1.wait();
+
+
 
     });
 

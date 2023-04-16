@@ -1,8 +1,12 @@
-# <h1 align="center"> hello-noir: Hardhat x Foundry Template </h1>
+# zkMafia!
 
-Demo hosted on: https://hello-noir.netlify.app/
+Play a game of Mafia without a trusted third party! 
 
-## Step-by-Step
+## Introduction
+In the standard Mafia game, all players need to trust the moderator. The moderator knows about everything that is going on in the game. Obviously, this is never a problem for friendly games, but wouldn't it be cool to play this game in an actually competitive setting? zkMafia makes this possible. Using zero-knowledge proofs, zkMafia lets the players decentralize the role of the moderator, thus making it possible for players to keep their secrets to themselves while playing the game.
+
+## Gameplay
+There are numerous details on who 
 
 0. `git submodule update --init --recursive`
 1. `forge install`
