@@ -77,7 +77,7 @@ contract Mafia {
 
     function playMafia(bytes memory _proof, address victimAddress) public {
         // verify the validity of the proof
-        proveRoleVerifier.verify(_proof);
+        require(proveRoleVerifier.verify(_proof), "Invalid proof in playMafia!");
 
         // verify that they are a mafia
 

@@ -23,6 +23,14 @@ describe("Hello", function () {
     let role_reveal_prover: any;
     let role_reveal_verifier: any;
 
+    const roleHashes = [
+      "0x26ef38b3202a99ac35fe7ee4c3a6f7c6426ea6c2efa34073a7a91bc308b0f6ce",
+      "0x2d80907c69cecc68fbd43a0299e25ceb6d81340cc36f8776a491ac05f1742e2f",
+      "0x00f649ef5b95797dae1c5e0a46ecb4513812a91b038d26d68a4b1f5f5afe24ab",
+      "0x2baf78ba8b20da37793a85632e98dee3a8c9e33260553e7a8576697148e8f48c",
+      "0x0440661377df8c650e0f27cad4a04257dc6e9f603d2febe8ab622f755787ef85"
+    ];
+
     async function deployTokenFixture() {
         // deploy the role verifier
         // const ProveRoleVerifier = await ethers.getContractFactory("src/ProveRoleVerifier.sol:TurboVerifier");
@@ -55,9 +63,9 @@ describe("Hello", function () {
           `Mafia.sol deployed to ${mafia.address}. Time: ${Date.now()}`
         );
     
-        const [addr1, addr2, addr3, addr4, addr5] = await ethers.getSigners();
+        const [addr1, addr2, addr3, addr4, addr5, addr6] = await ethers.getSigners();
     
-        return { mafia, addr1, addr2, addr3, addr4, addr5 };
+        return { mafia, addr1, addr2, addr3, addr4, addr5, addr6 };
     }
 
     before(async function() {
@@ -104,13 +112,7 @@ describe("Hello", function () {
 
     it("Prove_role verify proof in nargo", async function () {
         prove_role_abi.role = 1;
-        prove_role_abi.role_hashes = [
-            "0x26ef38b3202a99ac35fe7ee4c3a6f7c6426ea6c2efa34073a7a91bc308b0f6ce",
-            "0x2d80907c69cecc68fbd43a0299e25ceb6d81340cc36f8776a491ac05f1742e2f",
-            "0x00f649ef5b95797dae1c5e0a46ecb4513812a91b038d26d68a4b1f5f5afe24ab",
-            "0x2baf78ba8b20da37793a85632e98dee3a8c9e33260553e7a8576697148e8f48c",
-            "0x0440661377df8c650e0f27cad4a04257dc6e9f603d2febe8ab622f755787ef85"
-        ];
+        prove_role_abi.role_hashes = roleHashes;
         prove_role_abi.salt = 1234567;
 
         const proof = await create_proof(prove_role_prover, prove_role_acir, prove_role_abi);
@@ -130,17 +132,40 @@ describe("Hello", function () {
         expect(verified).eq(true);
     });
 
-    it("Should initialize without error", async function () {
-        const {mafia, addr1, addr2, addr3, addr4, addr5} = await loadFixture(deployTokenFixture);
+    it("Begin game", async function () {
+        const { mafia, addr1, addr2, addr3, addr4, addr5, addr6, } = await loadFixture(deployTokenFixture);
         
+        // no player should be registered in the game before initialization
         const status = await mafia.areTheyAlive(addr1.address);
         expect(status).to.equal(false);
 
         await mafia.startGame();
+
+        // all players should be there after initialization
         const status2 = await mafia.areTheyAlive(addr1.address);
         expect(status2).to.equal(true);
 
-      });
+        // the game starts by the mafia making a move
+        // note that the mafia uses an address (addr6) other than its own (addr5)
+        // prepare the proof that will tell the contract who the mafia's victim is
+        let mafiaABI = prove_role_abi;
+        mafiaABI.role = 1;
+        mafiaABI.role_hashes = roleHashes;
+        mafiaABI.salt = 1234567;
+
+        // addr2 is getting killed
+        const proof = await create_proof(prove_role_prover, prove_role_acir, mafiaABI);
+
+        const verified = await verify_proof(prove_role_verifier, proof);
+
+        expect(verified).eq(true);
+
+        await (await mafia.connect(addr6).playMafia(
+          proof,
+          addr2.getAddress()
+        )).wait();
+
+    });
 
     // it("Should reject false proof", async function () {
     //     abi.x = 2;
