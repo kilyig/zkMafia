@@ -145,6 +145,10 @@ contract Mafia {
         }
     }
 
+    function areTheyAlive(address friend) public view returns (bool status) {
+        return game.isAlive[friend];
+    }
+
     function announceRole() public {
 
     }
