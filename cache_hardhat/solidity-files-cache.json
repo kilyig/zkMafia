@@ -1,0 +1,257 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/evanschott/Desktop/again/hello-noir/src/Mafia.sol": {
+      "lastModificationDate": 1681624587895,
+      "contentHash": "690ba8fe89c5f3a80a575c92bee8655e",
+      "sourceName": "src/Mafia.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363831363235383738343138"
+            }
+          }
+        }
+      },
+      "imports": [
+        "hardhat/console.sol",
+        "./interfaces/IProveRoleVerifier.sol",
+        "./interfaces/IRoleRevealVerifier.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "Mafia"
+      ]
+    },
+    "/Users/evanschott/Desktop/again/hello-noir/src/interfaces/IProveRoleVerifier.sol": {
+      "lastModificationDate": 1681624516158,
+      "contentHash": "2888a0e3aecf268ad5f83c17e941093c",
+      "sourceName": "src/interfaces/IProveRoleVerifier.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363831363235383738343138"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0"
+      ],
+      "artifacts": [
+        "IProveRoleVerifier"
+      ]
+    },
+    "/Users/evanschott/Desktop/again/hello-noir/src/interfaces/IRoleRevealVerifier.sol": {
+      "lastModificationDate": 1681624412164,
+      "contentHash": "942dc2ad89e9a95a8f2575aaa788cee0",
+      "sourceName": "src/interfaces/IRoleRevealVerifier.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363831363235383738343138"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0"
+      ],
+      "artifacts": [
+        "IRoleRevealVerifier"
+      ]
+    },
+    "/Users/evanschott/Desktop/again/hello-noir/node_modules/hardhat/console.sol": {
+      "lastModificationDate": 1681625024634,
+      "contentHash": "4ff3cd2f6272c9a6516e9ee4f2b967d3",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363831363235383738343138"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">= 0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
+      ]
+    },
+    "/Users/evanschott/Desktop/again/hello-noir/src/ProveRoleVerifier.sol": {
+      "lastModificationDate": 1681624293422,
+      "contentHash": "d13483ecd6257c0c49dd0292b84af8d8",
+      "sourceName": "src/ProveRoleVerifier.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363831363235383738343138"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0"
+      ],
+      "artifacts": [
+        "Bn254Crypto",
+        "PolynomialEval",
+        "Transcript",
+        "TurboVerifier",
+        "Types"
+      ]
+    },
+    "/Users/evanschott/Desktop/again/hello-noir/src/RoleRevealVerifier.sol": {
+      "lastModificationDate": 1681624372585,
+      "contentHash": "ab0cc1f1067289b13b2710a583d0112e",
+      "sourceName": "src/RoleRevealVerifier.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x0000000000000031363831363235383738343138"
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0"
+      ],
+      "artifacts": [
+        "Bn254Crypto",
+        "PolynomialEval",
+        "Transcript",
+        "TurboVerifier",
+        "Types"
+      ]
+    }
+  }
+}

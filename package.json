@@ -1,34 +1,40 @@
 {
-  "name": "zkMafia",
+  "name": "hardhat-foundry-template",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/kilyig/zkMafia.git",
-  "author": "kilyig <yigit@kilicoglu.nom.tr>",
-  "license": "MIT",
+  "description": "The harmony between Foundry and Hardhat.",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "hardhat test",
+    "test:full": "hardhat run scripts/generate_sol_verifier.ts && forge test && hardhat test",
+    "generate:contract": "hardhat run scripts/generate_sol_verifier.ts",
+    "deploy": "bash scripts/deploy.sh"
+  },
+  "author": "Devan Non <devanon@chainstride.capital>",
+  "license": "Apache-2.0",
   "devDependencies": {
-    "@ethersproject/abi": "^5.4.7",
-    "@ethersproject/providers": "^5.4.7",
-    "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
-    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
-    "@nomiclabs/hardhat-ethers": "^2.2.3",
-    "@nomiclabs/hardhat-etherscan": "^3.0.0",
-    "@typechain/ethers-v5": "^10.1.0",
-    "@typechain/hardhat": "^6.1.2",
-    "@types/chai": "^4.2.0",
-    "@types/mocha": ">=9.1.0",
-    "@types/node": ">=12.0.0",
-    "chai": "^4.3.7",
-    "ethers": "^5.4.7",
-    "hardhat": "^2.13.1",
-    "hardhat-gas-reporter": "^1.0.8",
-    "solidity-coverage": "^0.8.0",
-    "ts-node": ">=8.0.0",
-    "typechain": "^8.1.0",
-    "typescript": ">=4.5.0"
+    "@noir-lang/aztec_backend": "^0.11.0",
+    "@noir-lang/barretenberg": "^2.19.0",
+    "@noir-lang/noir_wasm": "^0.10.0",
+    "@nomiclabs/hardhat-ethers": "^2.0.6",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@typechain/ethers-v5": "^10.0.0",
+    "@typechain/hardhat": "^6.0.0",
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^17.0.35",
+    "chai": "^4.3.6",
+    "ethereum-waffle": "^3.2.0",
+    "ethers": "^5.6.6",
+    "hardhat": "^2.9.5",
+    "hardhat-preprocessor": "^0.1.4",
+    "ts-node": "^10.7.0",
+    "typechain": "^8.0.0",
+    "typescript": "^4.6.4"
   },
   "dependencies": {
-    "@nomiclabs/hardhat-waffle": "^2.0.5",
-    "ethereum-waffle": "^4.0.10"
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.8"
   }
 }

@@ -6,6 +6,6 @@ fn main(
     roleHash: Field
 ) {
     constrain role < 2;
-    let hash = std::hash::pedersen([role as Field, salt as Field])[0];
-    constrain roleHash == hash;
+    let hash = std::hash::pedersen([role as Field, salt as Field]);
+    constrain roleHash == hash[0];
 }
